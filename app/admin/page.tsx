@@ -1,5 +1,4 @@
 "use client";
-
 import { useState } from "react";
 
 const AdminPage = () => {
@@ -7,11 +6,24 @@ const AdminPage = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [progressValue, setProgressValue] = useState("");
 
-  const handleLogin = () => {
-    if (password === process.env.NEXT_PUBLIC_PASSWORD) {
-      setIsAuthenticated(true);
-    } else {
-      alert("Incorrect password");
+  const handleLogin = async () => {
+    try {
+      const res = await fetch("/api/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ password }),
+      });
+
+      const data = await res.json();
+
+      if (data.success) {
+        setIsAuthenticated(true);
+      } else {
+        alert("Parolă incorectă");
+      }
+    } catch (err) {
+      console.error(err);
+      alert("Eroare la autentificare");
     }
   };
 
@@ -22,7 +34,7 @@ const AdminPage = () => {
   const handleProgressSubmit = async () => {
     const progress = parseInt(progressValue, 10);
     if (isNaN(progress)) {
-      alert("Please enter a valid number");
+      alert("Introdu un număr valid");
       return;
     }
 
@@ -35,14 +47,14 @@ const AdminPage = () => {
 
       const data = await res.json();
       if (data.success) {
-        alert(`Progress set to ${progress} lei`);
-        setProgressValue(""); // reset input
+        alert(`Suma setată la ${progress} lei`);
+        setProgressValue("");
       } else {
-        alert(`Error: ${data.error}`);
+        alert(`Eroare: ${data.error}`);
       }
     } catch (err) {
       console.error(err);
-      alert("Failed to update progress");
+      alert("Eșec la actualizarea sumei");
     }
   };
 
