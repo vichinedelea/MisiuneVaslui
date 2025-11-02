@@ -1,65 +1,90 @@
+"use client";
+
 import Image from "next/image";
+import './globals.css';
+import { useState, useEffect } from "react";
 
 export default function Home() {
+  const targetAmount = 30000;
+  const [progressValue, setProgressValue] = useState(0);
+
+  const calculatePercentage = (sum: number) => sum ? (sum / targetAmount) * 100 : 0;
+
+  // Fetch progress from API route
+  useEffect(() => {
+    const fetchProgress = async () => {
+      try {
+        const res = await fetch("/api/progress");
+        const data = await res.json();
+        if (typeof data.progress === 'number') setProgressValue(data.progress);
+        else setProgressValue(0);
+      } catch (error) {
+        console.error('Error fetching progress:', error);
+        setProgressValue(0);
+      }
+    };
+    fetchProgress();
+  }, []);
+
+  const handleCopy = () => {
+    navigator.clipboard.writeText('RO08BTRLRONCRT0668242601')
+      .then(() => alert('Cont RON copiat!'))
+      .catch(err => console.error('Failed to copy text: ', err));
+  };
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
+    <div className="flex flex-col justify-center items-center text-center p-4 bg-[#fff7f1] min-h-screen">
+      
+      {/* Titlu */}
+      <h1 className="text-5xl font-BerkshireSwash text-[#216778] mb-6">
+        Donații pentru lemne și cadouri – Vaslui 2025
+      </h1>
+      <p className="text-3xl font-BerkshireSwash text-[#693b23] mb-4">
+        Termen limită: 5 Decembrie
+      </p>
+
+      {/* Imagine */}
+      <Image src="/camion.png" alt="Cadouri si lemne pentru Vaslui" width={200} height={200} className="mb-6" />
+
+      {/* Progress bar */}
+      <p className="text-xl text-[#693b23] mb-4">
+        <b>{progressValue} lei</b> strânși pentru lemne și cadouri din 30.000 lei
+      </p>
+      <progress value={calculatePercentage(progressValue)} max={100} className="w-full max-w-lg h-6 mb-6 bg-gray-200"></progress>
+
+      {/* Buton donație */}
+      <button
+        className="bg-[#b94d14] text-[#ffffff] text-xl font-BerkshireSwash py-3 px-6 rounded-[30px] hover:bg-[#c57e3c] mb-6"
+        onClick={handleCopy}
+      >
+        Copiază contul și donează pentru lemne și cadouri
+      </button>
+
+      <p className="text-sm text-[#693b23] mb-4">
+        *progress bar-ul este actualizat aproximativ o dată la 3 ore
+      </p>
+
+      {/* Informații cont */}
+      <div className="text-left text-[#693b23] md:mx-[25%]">
+        <p className="text-xl font-BerkshireSwash mb-4">
+          Asociația Speranța Fără Frontiere
+        </p>
+        <h2 className="text-base mb-1">Cont RON</h2>
+        <p className="text-base mb-4">RO08BTRLRONCRT0668242601</p>
+
+        <h2 className="text-base mb-1">Cont EUR</h2>
+        <p className="text-base mb-4">RO55BTRLEURCRT0668242601</p>
+
+        <h2 className="text-base mb-1">Cont USD</h2>
+        <p className="text-base mb-4">RO59BTRLUSDCRT0668242601</p>
+
+        <p className="text-base mb-4">
+          Donațiile colectate anul acesta vor fi folosite exclusiv pentru achiziția de lemne de foc și cadouri pentru familiile din Vaslui.
+        </p>
+        <p className="text-base mb-1">Vă rugăm să menționați în transfer &quot;donație Vaslui&quot; pentru a fi direcționați către această cauză. Vă mulțumim!</p>
+        <p className="text-base mb-1">Pentru donații cash: 0723 999 950 - Dumitru Hrișca</p>
+      </div>
+
     </div>
   );
 }
