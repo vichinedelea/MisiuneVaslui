@@ -36,19 +36,26 @@ export default function Home() {
     <div className="flex flex-col justify-center items-center text-center p-4 bg-[#fff7f1] min-h-screen">
       
       {/* Titlu */}
-      <h1 className="text-5xl font-BerkshireSwash text-[#216778] mb-6">
-        Donații pentru lemne și cadouri – Vaslui 2025
+      <h1 className="text-5xl font-serif mb-2" style={{ color: '#336600' }}>
+        Încălzește un înger
       </h1>
-      <p className="text-3xl font-BerkshireSwash text-[#693b23] mb-4">
-        Termen limită: 5 Decembrie
+
+      {/* Subtitlu mai jos, verde mai deschis */}
+      <p className="text-xl font-BerkshireSwash mb-4" style={{ color: '#666633' }}>
+        lemne și cadouri – Vaslui 2025
+      </p>
+
+      {/* Termen limită păstrat */}
+      <p className="text-xl font-BerkshireSwash text-[#693b23] mb-6">
+        Termen limită: 15 Decembrie
       </p>
 
       {/* Imagine */}
-      <Image src="/camion.png" alt="Cadouri si lemne pentru Vaslui" width={200} height={200} className="mb-6" />
+      <Image src="/theMissionTruck.png" alt="Cadouri si lemne pentru Vaslui" width={200} height={200} className="mb-6" />
 
       {/* Progress bar */}
       <p className="text-xl text-[#693b23] mb-4">
-        <b>{progressValue} lei</b> strânși pentru lemne și cadouri din 30.000 lei
+        <b>{progressValue} lei</b> strânși pentru lemne și cadouri din 40.000 lei
       </p>
       <progress value={calculatePercentage(progressValue)} max={100} className="w-full max-w-lg h-6 mb-6 bg-gray-200"></progress>
 
